@@ -46,7 +46,7 @@ class Tague(models.Model):
 
 class Article(models.Model):
     """Model definition for Article."""
-    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, related_name='article_sous_categorie')
+    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, related_name='article_categorie')
     auteur = models.ForeignKey(User, on_delete=models.CASCADE, related_name='article_auteur')
     tague = models.ManyToManyField(Tague, related_name='article_tag')
     titre = models.CharField(max_length=100)
