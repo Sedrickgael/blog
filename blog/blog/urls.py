@@ -35,6 +35,8 @@ schema_view = get_schema_view(
    permission_classes=(permissions.AllowAny,),
 )
 
+from graphene_django.views import GraphQLView
+from .schema import schema
 urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
@@ -42,7 +44,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('tinymce/', include('tinymce.urls')),
     path('admin/filebrowser/', site.urls),
-    path('', include('myblog.urls'))
+    path('', include('myblog.urls')),
+    path("graphql", GraphQLView.as_view(graphiql=True , schema=schema)),
 ]
 
 

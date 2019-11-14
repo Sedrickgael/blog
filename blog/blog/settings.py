@@ -45,8 +45,9 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework',
     'myblog.apps.MyblogConfig',
-
-]
+    'graphene_django',
+    
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -77,7 +78,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'blog.wsgi.application'
-
+GRAPHENE = {
+    'SCHEMA': 'blog.schema.schema'
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
