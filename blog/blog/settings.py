@@ -75,7 +75,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'blog.wsgi.application'
-
+GRAPHENE = {
+    'SCHEMA': 'blog.schema.schema'
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
