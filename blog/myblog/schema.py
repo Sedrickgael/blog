@@ -117,13 +117,13 @@ class RelayCreateTague(graphene.relay.ClientIDMutation):
         status = kwargs.get('status',None)
         tague = Tague(nom=nom)
         tague.save()           
-        return RelayCreateTague(tags=tague)
+        return RelayCreateTague(tag=tague)
     
         
 class RelayCreateCategorie(graphene.relay.ClientIDMutation):
     categorie = graphene.Field(CategorieNode)
     class Input:
-        
+        description = graphene.String()
         nom = graphene.String()
         status = graphene.Boolean()
     def mutate_and_get_payload(root,info,**kwargs):
