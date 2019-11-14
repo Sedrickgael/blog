@@ -28,12 +28,15 @@ Quick start
 
 2. Include the polls URLconf in your project urls.py like this::
 
-    path('polls/', include('polls.urls')),
+    path('myblog/', include('myblog.urls')),
 
-3. Run `python manage.py migrate` to create the polls models.
+3. Run `python manage.py migrate` to create the myblog models.
 
 4. Start the development server and visit http://127.0.0.1:8000/admin/
    to create a poll (you'll need the Admin app enabled).
 
-5. Visit http://127.0.0.1:8000/polls/ to participate in the poll
+5. Visit http://127.0.0.1:8000/myblog/
   ```
+  4. Créez un fichier django-nan-myblog/LICENSE
+  5. Next we’ll create setup.cfg and setup.py files which detail how to build and install the app. A full explanation of these files is beyond the scope of this tutorial, but the setuptools documentation has a good explanation. Create the files django-nan-myblog/setup.cfg and django-nan-myblog/setup.py with the following contents:
+
