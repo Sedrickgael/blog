@@ -25,31 +25,7 @@ class Categorie(models.Model):
         """Unicode representation of Categorie."""
         return self.nom
 
-class SousCategorie(models.Model):
-
-    """Model definition for Categorie."""
-    nom = models.CharField(max_length=100)
-    image_sous_categorie = models.ImageField(upload_to='images/blog/souscategories/')
-    description = models.TextField()
-    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, related_name='Categorie')
-
-    status = models.BooleanField(default=True)
-    date_add = models.DateTimeField(auto_now_add=True)
-    date_upd = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        """Meta definition for Categorie."""
-
-        verbose_name = "Sous Categorie d'articles"
-        verbose_name_plural = "Sous Categories d'articles"
-
-    def __str__(self):
-        """Unicode representation of sous Categorie."""
-        return self.nom
-
-
-
-class Tag(models.Model):
+class Tague(models.Model):
     """Model definition for Tag."""
     nom = models.CharField(max_length=50)
     status = models.BooleanField(default=True)
@@ -70,14 +46,18 @@ class Tag(models.Model):
 
 class Article(models.Model):
     """Model definition for Article."""
-    sous_categorie = models.ForeignKey(SousCategorie, on_delete=models.CASCADE, related_name='article_sous_categorie')
+    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, related_name='article_sous_categorie')
     auteur = models.ForeignKey(User, on_delete=models.CASCADE, related_name='article_auteur')
-    tag = models.ManyToManyField(Tag, related_name='article_tag')
+    tague = models.ManyToManyField(Tague, related_name='article_tag')
     titre = models.CharField(max_length=100)
     description = models.TextField()
     image = models.ImageField(upload_to='blog/')
     contenu = HTMLField('contenu')
     vue = models.PositiveIntegerField()
+    slug = models.SlugField()
+    nb_like =  models.PositiveIntegerField()
+    nb_dislike =  models.PositiveIntegerField()
+    nb_commentaire = models.PositiveIntegerField()
 
     status = models.BooleanField(default=False,null=True)
     date_add = models.DateTimeField(auto_now_add=True)
@@ -100,6 +80,7 @@ class Commentaire(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comment')
     message = HTMLField('message')
     sujet = models.CharField(max_length=250)
+    
     status = models.BooleanField(default=False)
     date_add = models.DateTimeField(auto_now_add=True)
     date_upd = models.DateTimeField(auto_now=True)
