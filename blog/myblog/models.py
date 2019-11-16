@@ -1,7 +1,7 @@
 from django.db import models
 from tinymce import HTMLField
 from django.contrib.auth.models import User
-
+from django.utils.text import slugify
 #we can change default User with your custom User
 
 class Categorie(models.Model):
@@ -46,15 +46,15 @@ class Tague(models.Model):
 
 class Article(models.Model):
     """Model definition for Article."""
-    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, related_name='article_sous_categorie')
+    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, related_name='article_categorie')
     auteur = models.ForeignKey(User, on_delete=models.CASCADE, related_name='article_auteur')
     tague = models.ManyToManyField(Tague, related_name='article_tag')
     titre = models.CharField(max_length=100)
     description = models.TextField()
     image = models.ImageField(upload_to='blog/')
-    contenu = HTMLField('contenu')
+    contenu = models.TextField()
     vue = models.PositiveIntegerField()
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=255,editable=False,)
     nb_like =  models.PositiveIntegerField()
     nb_dislike =  models.PositiveIntegerField()
     nb_commentaire = models.PositiveIntegerField()
@@ -63,7 +63,31 @@ class Article(models.Model):
     date_add = models.DateTimeField(auto_now_add=True)
     date_upd = models.DateTimeField(auto_now=True)
     
+    @property
+    def nbr_like(self):
+        n = self.article_like.all().count()
+        return n
+
+    @property
+    def nbr_comment(self):
+        n = self.article_commentaire.all().count()
+   
+        return n
     
+    @property
+    def nb_dislike(self):
+        n = self.Dislike.all().count()
+        return n
+
+
+
+    def save(self, *args, **kwargs):
+        self.titre_slug =slugify(self.titre)
+        self.nb_com = self.nbr_comment
+        self.nb_like=self.nbr_like
+        self.nb_dislike = self.nb_dislike
+
+        super(Article, self).save(*args, **kwargs)
 
     class Meta:
         """Meta definition for Article."""
@@ -74,7 +98,7 @@ class Article(models.Model):
     def __str__(self):
         """Unicode representation of Article."""
         return self.titre
-
+    
 class Commentaire(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='article_commentaire')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comment')
